@@ -1,11 +1,19 @@
-﻿public class Program
+﻿using Microsoft.Data.Sqlite;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+public class Program
 {
     static void Main()
     {
 
-        SQLiteConnection sqlite_conn = CreateConnection;
+        string opcao = string.Empty;
+        SqliteConnection con = CreateConnection();
 
-        CreateTable(sqlite_conn);
+        CreateTable(con);
 
         do 
         {
@@ -19,9 +27,9 @@
             Console.WriteLine("|      4 - Remover        |");
             Console.WriteLine("|                         |");
             Console.WriteLine("|-------------------------|");
-            int opcao = Console.ReadLine();
+            opcao = Console.ReadLine();
 
-            if(opcao == 1){
+            if(opcao == "1"){
 
                 Console.WriteLine("|-------------------------|");
                 Console.WriteLine("|                         |");
@@ -29,15 +37,16 @@
                 Console.WriteLine("|      2 - Aprendiz       |");
                 Console.WriteLine("|                         |");
                 Console.WriteLine("|-------------------------|");
-                    
-                int opcao2 = Console.ReadLine();
+                
+                var opcao2 = Console.ReadLine();
 
-                if(opcao2 == 1){
+                if(opcao2 == "1"){
 
                     Console.Write("Nome: ");
                     string nome = Console.ReadLine();
                     Console.Write("Idade: ");
-                    int idade = Console.ReadLine();
+                    string sIdade = Console.ReadLine();
+                    int idade = Convert.ToInt32(sIdade);
                     Console.Write("Telefone: ");
                     string telefone = Console.ReadLine();
                     Console.Write("E-mail: ");
@@ -47,14 +56,15 @@
 
                     Funcionario fun = new Funcionario(nome, idade, telefone, email, funcao);
 
-                    cadastrarFuncionario(sqlite_conn, fun);
+                    cadastrarFuncionario(con, fun);
 
-                }else if(opcao2 == 2){
+                }else if(opcao2 == "2"){
 
                     Console.Write("Nome: ");
                     string nome = Console.ReadLine();
                     Console.Write("Idade: ");
-                    int idade = Console.ReadLine();
+                    string sIdade = Console.ReadLine();
+                    int idade = Convert.ToInt32(sIdade);
                     Console.Write("Telefone: ");
                     string telefone = Console.ReadLine();
                     Console.Write("E-mail: ");
@@ -62,11 +72,11 @@
 
                     Aprendiz apre = new Aprendiz(nome, idade, telefone, email);
 
-                    cadastrarAprendiz(sqlite_conn, apre);
+                    cadastrarAprendiz(con, apre);
 
                 }
 
-            }else if(opcao == 2){
+            }else if(opcao == "2"){
 
                 Console.WriteLine("|-------------------------|");
                 Console.WriteLine("|                         |");
@@ -75,15 +85,16 @@
                 Console.WriteLine("|                         |");
                 Console.WriteLine("|-------------------------|");
 
-                int opcao2 = Console.ReadLine();
+                string sOpcao2 = Console.ReadLine();
+                int opcao2 = Convert.ToInt32(sOpcao2);
 
                 if(opcao2 == 1){
-                    listarFuncionario();
+                    listarFuncionario(con);
                 }else if(opcao2 == 2){
-                    listarAprendiz();
+                    listarAprendiz(con);
                 }
 
-            }else if(opcao == 3){
+            }else if(opcao == "3"){
                 Console.WriteLine("|-------------------------|");
                 Console.WriteLine("|                         |");
                 Console.WriteLine("|      1 - Funcionario    |");
@@ -91,14 +102,15 @@
                 Console.WriteLine("|                         |");
                 Console.WriteLine("|-------------------------|");
 
-                int opcao2 = Console.ReadLine();
+                string opcao2 = Console.ReadLine();
 
-                if(opcao2 == 1){
+                if(opcao2 == "1"){
 
                     Console.Write("Nome: ");
                     string nome = Console.ReadLine();
                     Console.Write("Idade: ");
-                    int idade = Console.ReadLine();
+                    string sIdade = Console.ReadLine();
+                    int idade = Convert.ToInt32(sIdade);
                     Console.Write("Telefone: ");
                     string telefone = Console.ReadLine();
                     Console.Write("E-mail: ");
@@ -108,13 +120,14 @@
 
                     Funcionario fun = new Funcionario(nome, idade, telefone, email, funcao);
 
-                    editarFuncionario(sqlite_conn, fun);
-                }else if(opcao2 == 2){
+                    editarFuncionario(con, fun);
+                }else if(opcao2 == "2"){
 
                     Console.Write("Nome: ");
                     string nome = Console.ReadLine();
                     Console.Write("Idade: ");
-                    int idade = Console.ReadLine();
+                    string sIdade = Console.ReadLine();
+                    int idade = Convert.ToInt32(sIdade);
                     Console.Write("Telefone: ");
                     string telefone = Console.ReadLine();
                     Console.Write("E-mail: ");
@@ -122,10 +135,10 @@
 
                     Aprendiz apre = new Aprendiz(nome, idade, telefone, email);
 
-                    editarFuncionario(sqlite_conn, apre);
+                    editarAprendiz(con, apre);
                 }
 
-            }else if(opcao == 4){
+            }else if(opcao == "4"){
                 Console.WriteLine("|-------------------------|");
                 Console.WriteLine("|                         |");
                 Console.WriteLine("|      1 - Funcionario    |");
@@ -133,93 +146,94 @@
                 Console.WriteLine("|                         |");
                 Console.WriteLine("|-------------------------|");
 
-                int opcao2 = Console.ReadLine();
+                string sOpcao2 = Console.ReadLine();
+                int opcao2 = Convert.ToInt32(sOpcao2);
 
                 if(opcao2 == 1){
 
                     Console.Write("Nome: ");
-                    string nome = Console.ReadLine();
+                    var nome = Console.ReadLine();
 
-                    deletarFuncionario(sqlite_conn, nome);
+                    deletarFuncionario(con, nome);
                 }else if(opcao2 == 2){
 
                     Console.Write("Nome: ");
-                    string nome = Console.ReadLine();
+                    var nome = Console.ReadLine();
 
-                    deletarAprendiz(sqlite_conn, nome);
+                    deletarAprendiz(con, nome);
                 }
 
             }
 
         }
-        while (opcao != 0);
+        while (opcao != "0");
         
     }
 
-      static SQLiteConnection CreateConnection()
+      static SqliteConnection CreateConnection()
       {
 
-         SQLiteConnection sqlite_conn;
-         sqlite_conn = new SQLiteConnection("Data Source=database.db;Version=3;New=True;Compress=True;");
-         try
-         {
-            sqlite_conn.Open();
-         }
-         catch (Exception ex)
-         {
+        var connectionStringBuilder = new SqliteConnectionStringBuilder();
+        connectionStringBuilder.DataSource = "./Nome.db";
 
-         }
-         return sqlite_conn;
+        var connection = new SqliteConnection(connectionStringBuilder.ConnectionString);
+        try
+        {
+            connection.Open();
+        }
+        catch (Exception ex)
+        {
+
+        }
+        return connection;
       }
 
-      static void CreateTable(SQLiteConnection conn)
+      static void CreateTable(SqliteConnection conn)
       {
 
-         SQLiteCommand sqlite_cmd;
-         string Createsql = "CREATE TABLE funcionario(nome VARCHAR(25), idade INT, telefone VARCHAR(15), email VARCHAR(35)), funcao VARCHAR(20)";
-         string Createsql1 = "CREATE TABLE aprendiz(nome VARCHAR(25), idade INT, telefone VARCHAR(15), email VARCHAR(35))";
-         sqlite_cmd = conn.CreateCommand();
-         sqlite_cmd.CommandText = Createsql;
-         sqlite_cmd.ExecuteNonQuery();
-         sqlite_cmd.CommandText = Createsql1;
-         sqlite_cmd.ExecuteNonQuery();
+        var createTableCmd = conn.CreateCommand();
+        createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS funcionario(nome VARCHAR(25), idade INT, telefone VARCHAR(15), email VARCHAR(35), funcao VARCHAR(20))";
+        createTableCmd.ExecuteNonQuery();
+
+        createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS aprendiz(nome VARCHAR(25), idade INT, telefone VARCHAR(15), email VARCHAR(35))";
+        createTableCmd.ExecuteNonQuery();
 
       }
 
-    static void cadastrarFuncionario(SQLiteConnection conn, Funcionario funcionario)
+    static void cadastrarFuncionario(SqliteConnection conn, Funcionario funcionario)
     {
-        SQLiteCommand sqlite_cmd;
+        SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "INSERT INTO funcionario(nome, idade, telefone, email, funcao) VALUES (@nome, @idade, @telefone, @email, @funcao);";
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@nome", funcionario.Nome));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@idade", funcionario.Idade));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@telefone", funcionario.Telefone));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@email", funcionario.Email));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@funcao", funcionario.Funcao));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", funcionario.Nome));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@idade", funcionario.Idade));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@telefone", funcionario.Telefone));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@email", funcionario.Email));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@funcao", funcionario.Funcao));
 
         sqlite_cmd.ExecuteNonQuery();
 
     }
 
-    static void cadastrarAprendiz(SQLiteConnection conn, Aprendiz aprendiz)
+    static void cadastrarAprendiz(SqliteConnection conn, Aprendiz aprendiz)
     {
-        SQLiteCommand sqlite_cmd;
+        SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "INSERT INTO aprendiz(nome, idade, telefone, email) VALUES (@nome, @idade, @telefone, @email);";
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@nome", aprendiz.Nome));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@idade", aprendiz.Idade));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@telefone", aprendiz.Telefone));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@email", aprendiz.Email));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", aprendiz.Nome));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@idade", aprendiz.Idade));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@telefone", aprendiz.Telefone));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@email", aprendiz.Email));
         
 
         sqlite_cmd.ExecuteNonQuery();
 
     }
 
-    static void listarFuncionario(SQLiteConnection conn)
+    static void listarFuncionario(SqliteConnection conn)
     {
-        SQLiteDataReader sqlite_datareader;
-        SQLiteCommand sqlite_cmd;
+        SqliteDataReader sqlite_datareader;
+        SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "SELECT * FROM funcionario";
 
@@ -232,10 +246,10 @@
         conn.Close();
     }
 
-    static void listarAprendiz(SQLiteConnection conn)
+    static void listarAprendiz(SqliteConnection conn)
     {
-        SQLiteDataReader sqlite_datareader;
-        SQLiteCommand sqlite_cmd;
+        SqliteDataReader sqlite_datareader;
+        SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "SELECT * FROM aprendiz";
 
@@ -248,54 +262,54 @@
         conn.Close();
     }
 
-    static void editarFuncionario(SQLiteConnection conn, Funcionario funcionario)
+    static void editarFuncionario(SqliteConnection conn, Funcionario funcionario)
     {
-        SQLiteCommand sqlite_cmd;
+        SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "UPDATE funcionario SET idade = @idade, telefone = @telefone, email = @email, funcao = @funcao where nome = @nome;";
 
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@idade", funcionario.Idade));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@telefone", funcionario.Telefone));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@email", funcionario.Email));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@funcao", funcionario.Funcao));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@nome", funcionario.Nome));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@idade", funcionario.Idade));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@telefone", funcionario.Telefone));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@email", funcionario.Email));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@funcao", funcionario.Funcao));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", funcionario.Nome));
 
         sqlite_cmd.ExecuteNonQuery();
 
     }
 
-    static void editarAprendiz(SQLiteConnection conn, Aprendiz aprendiz)
+    static void editarAprendiz(SqliteConnection conn, Aprendiz aprendiz)
     {
-        SQLiteCommand sqlite_cmd;
+        SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "UPDATE aprendiz SET idade = @idade, telefone = @telefone, email = @email where nome = @nome;";
 
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@idade", funcionario.Idade));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@telefone", funcionario.Telefone));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@email", funcionario.Email));
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@nome", funcionario.Nome));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@idade", aprendiz.Idade));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@telefone", aprendiz.Telefone));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@email", aprendiz.Email));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", aprendiz.Nome));
 
         sqlite_cmd.ExecuteNonQuery();
 
     }
 
-    static void deletarFuncionario(SQLiteConnection conn, string nome)
+    static void deletarFuncionario(SqliteConnection conn, string nome)
     {
-        SQLiteCommand sqlite_cmd;
+        SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "DELETE FROM funcionario WHERE nome=@nome;";
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@nome", nome));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", nome));
 
         sqlite_cmd.ExecuteNonQuery();
 
     }
 
-    static void deletarAprendiz(SQLiteConnection conn, string nome)
+    static void deletarAprendiz(SqliteConnection conn, string nome)
     {
-        SQLiteCommand sqlite_cmd;
+        SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "DELETE FROM aprendiz WHERE nome=@nome;";
-        this.sqlite_cmd.Parameters.Add(new SQLiteParameter("@nome", nome));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", nome));
 
         sqlite_cmd.ExecuteNonQuery();
 
