@@ -3,7 +3,7 @@ class Funcionario : Pessoa
 {
     public string Funcao{get; set;}
 
-    public Funcionario(string nome, int idade, int telefone, string email, string funcao) : base(nome, idade, telefone, email)
+    public Funcionario(string nome, int idade, string telefone, string email, string funcao) : base(nome, idade, telefone, email)
     {
         Funcao = funcao;
     }

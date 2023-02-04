@@ -4,11 +4,11 @@ class Pessoa
 
     public int Idade { get; set; }
 
-    public int Telefone { get; set; }
+    public string Telefone { get; set; }
 
     public string Email { get; set; }
    
-    public Pessoa(string nome, int idade, int telefone, string email)
+    public Pessoa(string nome, int idade, string telefone, string email)
     {
         Nome = nome;
         Idade = idade;
