@@ -231,10 +231,10 @@ public class Program
         conn.Open();
 
         var createTableCmd = conn.CreateCommand();
-        createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS funcionario(nome VARCHAR(25), idade INT, telefone VARCHAR(15), email VARCHAR(35), funcao VARCHAR(20))";
+        createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS funcionario(nome VARCHAR(25), idade INT, telefone VARCHAR(15), email VARCHAR(35), funcao VARCHAR(20), salario INT)";
         createTableCmd.ExecuteNonQuery();
 
-        createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS aprendiz(nome VARCHAR(25), idade INT, telefone VARCHAR(15), email VARCHAR(35))";
+        createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS aprendiz(nome VARCHAR(25), idade INT, telefone VARCHAR(15), email VARCHAR(35), salario INT)";
         createTableCmd.ExecuteNonQuery();
 
         conn.Close();
@@ -244,16 +244,18 @@ public class Program
     static void cadastrarFuncionario(SqliteConnection conn, Funcionario funcionario)
     {
 
-        conn.Open();
+       conn.Open();
 
         SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = "INSERT INTO funcionario(nome, idade, telefone, email, funcao) VALUES (@nome, @idade, @telefone, @email, @funcao);";
+        sqlite_cmd.CommandText = "INSERT INTO funcionario(nome, idade, telefone, email, funcao, salario) VALUES (@nome, @idade, @telefone, @email, @funcao, @salario);";
         sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", funcionario.Nome));
         sqlite_cmd.Parameters.Add(new SqliteParameter("@idade", funcionario.Idade));
         sqlite_cmd.Parameters.Add(new SqliteParameter("@telefone", funcionario.Telefone));
         sqlite_cmd.Parameters.Add(new SqliteParameter("@email", funcionario.Email));
         sqlite_cmd.Parameters.Add(new SqliteParameter("@funcao", funcionario.Funcao));
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@salario", funcionario.Salario()));
+        
 
         sqlite_cmd.ExecuteNonQuery();
 
@@ -268,12 +270,13 @@ public class Program
 
         SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
-        sqlite_cmd.CommandText = "INSERT INTO aprendiz(nome, idade, telefone, email) VALUES (@nome, @idade, @telefone, @email);";
+        sqlite_cmd.CommandText = "INSERT INTO aprendiz(nome, idade, telefone, email, salario) VALUES (@nome, @idade, @telefone, @email, @salario);";
         sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", aprendiz.Nome));
         sqlite_cmd.Parameters.Add(new SqliteParameter("@idade", aprendiz.Idade));
         sqlite_cmd.Parameters.Add(new SqliteParameter("@telefone", aprendiz.Telefone));
         sqlite_cmd.Parameters.Add(new SqliteParameter("@email", aprendiz.Email));
-        
+        sqlite_cmd.Parameters.Add(new SqliteParameter("@salario", aprendiz.Salario()));
+
 
         sqlite_cmd.ExecuteNonQuery();
 
@@ -294,7 +297,7 @@ public class Program
         sqlite_datareader = sqlite_cmd.ExecuteReader();
         while (sqlite_datareader.Read())
         {
-            string myreader = "Nome: " + sqlite_datareader.GetString(0) + ", " + sqlite_datareader.GetString(1) + " Anos, Telefone: " + sqlite_datareader.GetString(2) + ", Email: " + sqlite_datareader.GetString(3) + " Função: " + sqlite_datareader.GetString(4);
+            string myreader = $"Nome: {sqlite_datareader.GetString(0)}" + $", Idade: {sqlite_datareader.GetString(1)}" + $", Telefone: {sqlite_datareader.GetString(2)}" + $", email: {sqlite_datareader.GetString(3)}" + $" função: {sqlite_datareader.GetString(4)}"+ $", Salario: {sqlite_datareader.GetString(5)}";
             Console.WriteLine(myreader);
         }
         conn.Close();
@@ -313,7 +316,7 @@ public class Program
         sqlite_datareader = sqlite_cmd.ExecuteReader();
         while (sqlite_datareader.Read())
         {
-            string myreader = "Nome: " + sqlite_datareader.GetString(0) + ", " + sqlite_datareader.GetString(1) + " Anos, Telefone: " + sqlite_datareader.GetString(2) + ", Email: " + sqlite_datareader.GetString(3);
+            string myreader = $"Nome: {sqlite_datareader.GetString(0)}" + $", Idade: {sqlite_datareader.GetString(1)}" + $", Telefone: {sqlite_datareader.GetString(2)}" + $", email: {sqlite_datareader.GetString(3)}"+ $", Salario: {sqlite_datareader.GetString(4)}";
             Console.WriteLine(myreader);
         }
         conn.Close();
