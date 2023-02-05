@@ -13,6 +13,8 @@ public class Program
         string opcao = string.Empty;
         SqliteConnection con = CreateConnection();
 
+        con.Open();
+
         CreateTable(con);
 
         do 
@@ -29,6 +31,8 @@ public class Program
             Console.WriteLine("|-------------------------|");
             opcao = Console.ReadLine();
 
+            Console.Clear();
+
             if(opcao == "1"){
 
                 Console.WriteLine("|-------------------------|");
@@ -38,7 +42,9 @@ public class Program
                 Console.WriteLine("|                         |");
                 Console.WriteLine("|-------------------------|");
                 
-                var opcao2 = Console.ReadLine();
+                string opcao2 = Console.ReadLine();
+
+                Console.Clear();
 
                 if(opcao2 == "1"){
 
@@ -58,6 +64,8 @@ public class Program
 
                     cadastrarFuncionario(con, fun);
 
+                    Console.Clear();
+
                 }else if(opcao2 == "2"){
 
                     Console.Write("Nome: ");
@@ -74,6 +82,8 @@ public class Program
 
                     cadastrarAprendiz(con, apre);
 
+                    Console.Clear();
+
                 }
 
             }else if(opcao == "2"){
@@ -85,14 +95,18 @@ public class Program
                 Console.WriteLine("|                         |");
                 Console.WriteLine("|-------------------------|");
 
-                string sOpcao2 = Console.ReadLine();
-                int opcao2 = Convert.ToInt32(sOpcao2);
+                string opcao2 = Console.ReadLine();
 
-                if(opcao2 == 1){
+                Console.Clear();
+
+                if(opcao2 == "1"){
                     listarFuncionario(con);
-                }else if(opcao2 == 2){
+                }else if(opcao2 == "2"){
                     listarAprendiz(con);
                 }
+
+                Console.ReadLine();
+                Console.Clear();
 
             }else if(opcao == "3"){
                 Console.WriteLine("|-------------------------|");
@@ -104,7 +118,11 @@ public class Program
 
                 string opcao2 = Console.ReadLine();
 
+                Console.Clear();
+
                 if(opcao2 == "1"){
+
+                    listarFuncionario(con);
 
                     Console.Write("Nome: ");
                     string nome = Console.ReadLine();
@@ -121,7 +139,12 @@ public class Program
                     Funcionario fun = new Funcionario(nome, idade, telefone, email, funcao);
 
                     editarFuncionario(con, fun);
+
+                    Console.Clear();
+
                 }else if(opcao2 == "2"){
+
+                    listarAprendiz(con);
 
                     Console.Write("Nome: ");
                     string nome = Console.ReadLine();
@@ -136,6 +159,9 @@ public class Program
                     Aprendiz apre = new Aprendiz(nome, idade, telefone, email);
 
                     editarAprendiz(con, apre);
+
+                    Console.Clear();
+
                 }
 
             }else if(opcao == "4"){
@@ -146,27 +172,38 @@ public class Program
                 Console.WriteLine("|                         |");
                 Console.WriteLine("|-------------------------|");
 
-                string sOpcao2 = Console.ReadLine();
-                int opcao2 = Convert.ToInt32(sOpcao2);
+                string opcao2 = Console.ReadLine();
+                Console.Clear();
 
-                if(opcao2 == 1){
+                if(opcao2 == "1"){
+
+                    listarFuncionario(con);
 
                     Console.Write("Nome: ");
                     var nome = Console.ReadLine();
 
                     deletarFuncionario(con, nome);
-                }else if(opcao2 == 2){
+
+                    Console.Clear();
+                    
+                }else if(opcao2 == "2"){
+
+                    listarAprendiz(con);
 
                     Console.Write("Nome: ");
                     var nome = Console.ReadLine();
 
                     deletarAprendiz(con, nome);
+
+                    Console.Clear();
                 }
 
             }
 
         }
         while (opcao != "0");
+
+        con.Close();
         
     }
 
@@ -191,6 +228,8 @@ public class Program
       static void CreateTable(SqliteConnection conn)
       {
 
+        conn.Open();
+
         var createTableCmd = conn.CreateCommand();
         createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS funcionario(nome VARCHAR(25), idade INT, telefone VARCHAR(15), email VARCHAR(35), funcao VARCHAR(20))";
         createTableCmd.ExecuteNonQuery();
@@ -198,10 +237,15 @@ public class Program
         createTableCmd.CommandText = "CREATE TABLE IF NOT EXISTS aprendiz(nome VARCHAR(25), idade INT, telefone VARCHAR(15), email VARCHAR(35))";
         createTableCmd.ExecuteNonQuery();
 
+        conn.Close();
+
       }
 
     static void cadastrarFuncionario(SqliteConnection conn, Funcionario funcionario)
     {
+
+        conn.Open();
+
         SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "INSERT INTO funcionario(nome, idade, telefone, email, funcao) VALUES (@nome, @idade, @telefone, @email, @funcao);";
@@ -213,10 +257,15 @@ public class Program
 
         sqlite_cmd.ExecuteNonQuery();
 
+        conn.Close();
+
     }
 
     static void cadastrarAprendiz(SqliteConnection conn, Aprendiz aprendiz)
     {
+
+        conn.Open();
+
         SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "INSERT INTO aprendiz(nome, idade, telefone, email) VALUES (@nome, @idade, @telefone, @email);";
@@ -228,10 +277,15 @@ public class Program
 
         sqlite_cmd.ExecuteNonQuery();
 
+        conn.Close();
+
     }
 
     static void listarFuncionario(SqliteConnection conn)
     {
+
+        conn.Open();
+
         SqliteDataReader sqlite_datareader;
         SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
@@ -240,7 +294,7 @@ public class Program
         sqlite_datareader = sqlite_cmd.ExecuteReader();
         while (sqlite_datareader.Read())
         {
-            string myreader = sqlite_datareader.GetString(0);
+            string myreader = "Nome: " + sqlite_datareader.GetString(0) + ", " + sqlite_datareader.GetString(1) + " Anos, Telefone: " + sqlite_datareader.GetString(2) + ", email: " + sqlite_datareader.GetString(3) + " função: " + sqlite_datareader.GetString(4);
             Console.WriteLine(myreader);
         }
         conn.Close();
@@ -248,6 +302,9 @@ public class Program
 
     static void listarAprendiz(SqliteConnection conn)
     {
+
+        conn.Open();
+
         SqliteDataReader sqlite_datareader;
         SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
@@ -256,7 +313,7 @@ public class Program
         sqlite_datareader = sqlite_cmd.ExecuteReader();
         while (sqlite_datareader.Read())
         {
-            string myreader = sqlite_datareader.GetString(0);
+            string myreader = "Nome: " + sqlite_datareader.GetString(0) + ", " + sqlite_datareader.GetString(1) + " Anos, Telefone: " + sqlite_datareader.GetString(2) + ", email: " + sqlite_datareader.GetString(3);
             Console.WriteLine(myreader);
         }
         conn.Close();
@@ -264,6 +321,9 @@ public class Program
 
     static void editarFuncionario(SqliteConnection conn, Funcionario funcionario)
     {
+
+        conn.Open();
+
         SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "UPDATE funcionario SET idade = @idade, telefone = @telefone, email = @email, funcao = @funcao where nome = @nome;";
@@ -276,10 +336,15 @@ public class Program
 
         sqlite_cmd.ExecuteNonQuery();
 
+        conn.Close();
+
     }
 
     static void editarAprendiz(SqliteConnection conn, Aprendiz aprendiz)
     {
+
+        conn.Open();
+
         SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "UPDATE aprendiz SET idade = @idade, telefone = @telefone, email = @email where nome = @nome;";
@@ -291,10 +356,15 @@ public class Program
 
         sqlite_cmd.ExecuteNonQuery();
 
+        conn.Close();
+
     }
 
     static void deletarFuncionario(SqliteConnection conn, string nome)
     {
+
+        conn.Open();
+
         SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "DELETE FROM funcionario WHERE nome=@nome;";
@@ -302,16 +372,23 @@ public class Program
 
         sqlite_cmd.ExecuteNonQuery();
 
+        conn.Close();
+
     }
 
     static void deletarAprendiz(SqliteConnection conn, string nome)
     {
+
+        conn.Open();
+
         SqliteCommand sqlite_cmd;
         sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "DELETE FROM aprendiz WHERE nome=@nome;";
         sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", nome));
 
         sqlite_cmd.ExecuteNonQuery();
+
+        conn.Close();
 
     }
 
