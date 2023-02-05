@@ -294,7 +294,7 @@ public class Program
         sqlite_datareader = sqlite_cmd.ExecuteReader();
         while (sqlite_datareader.Read())
         {
-            string myreader = "Nome: " + sqlite_datareader.GetString(0) + ", " + sqlite_datareader.GetString(1) + " Anos, Telefone: " + sqlite_datareader.GetString(2) + ", email: " + sqlite_datareader.GetString(3) + " função: " + sqlite_datareader.GetString(4);
+            string myreader = "Nome: " + sqlite_datareader.GetString(0) + ", " + sqlite_datareader.GetString(1) + " Anos, Telefone: " + sqlite_datareader.GetString(2) + ", Email: " + sqlite_datareader.GetString(3) + " Função: " + sqlite_datareader.GetString(4);
             Console.WriteLine(myreader);
         }
         conn.Close();
@@ -313,7 +313,7 @@ public class Program
         sqlite_datareader = sqlite_cmd.ExecuteReader();
         while (sqlite_datareader.Read())
         {
-            string myreader = "Nome: " + sqlite_datareader.GetString(0) + ", " + sqlite_datareader.GetString(1) + " Anos, Telefone: " + sqlite_datareader.GetString(2) + ", email: " + sqlite_datareader.GetString(3);
+            string myreader = "Nome: " + sqlite_datareader.GetString(0) + ", " + sqlite_datareader.GetString(1) + " Anos, Telefone: " + sqlite_datareader.GetString(2) + ", Email: " + sqlite_datareader.GetString(3);
             Console.WriteLine(myreader);
         }
         conn.Close();
