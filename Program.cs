@@ -180,7 +180,7 @@ public class Program
                     listarFuncionario(con);
 
                     Console.Write("Nome: ");
-                    var nome = Console.ReadLine();
+                    string nome = Console.ReadLine();
 
                     deletarFuncionario(con, nome);
 
@@ -191,7 +191,7 @@ public class Program
                     listarAprendiz(con);
 
                     Console.Write("Nome: ");
-                    var nome = Console.ReadLine();
+                    string nome = Console.ReadLine();
 
                     deletarAprendiz(con, nome);
 
