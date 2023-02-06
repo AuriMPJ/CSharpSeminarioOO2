@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\yuris\\OneDrive\\Desktop\\CSharpSeminarioOO2\\c#.csproj": {}
+    "C:\\Projeto.OO.3sem\\IFPR.TADS21\\4Semestre\\OO2\\CSharp-seminario-OO\\c#.csproj": {}
   },
   "projects": {
-    "C:\\Users\\yuris\\OneDrive\\Desktop\\CSharpSeminarioOO2\\c#.csproj": {
+    "C:\\Projeto.OO.3sem\\IFPR.TADS21\\4Semestre\\OO2\\CSharp-seminario-OO\\c#.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\yuris\\OneDrive\\Desktop\\CSharpSeminarioOO2\\c#.csproj",
+        "projectUniqueName": "C:\\Projeto.OO.3sem\\IFPR.TADS21\\4Semestre\\OO2\\CSharp-seminario-OO\\c#.csproj",
         "projectName": "c#",
-        "projectPath": "C:\\Users\\yuris\\OneDrive\\Desktop\\CSharpSeminarioOO2\\c#.csproj",
-        "packagesPath": "C:\\Users\\yuris\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\yuris\\OneDrive\\Desktop\\CSharpSeminarioOO2\\obj\\",
+        "projectPath": "C:\\Projeto.OO.3sem\\IFPR.TADS21\\4Semestre\\OO2\\CSharp-seminario-OO\\c#.csproj",
+        "packagesPath": "C:\\Users\\HOME\\.nuget\\packages\\",
+        "outputPath": "C:\\Projeto.OO.3sem\\IFPR.TADS21\\4Semestre\\OO2\\CSharp-seminario-OO\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\yuris\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\HOME\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -54,12 +54,30 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.13, 6.0.13]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[6.0.13, 6.0.13]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.13, 6.0.13]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.13, 6.0.13]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.405\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

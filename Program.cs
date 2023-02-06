@@ -246,8 +246,7 @@ public class Program
 
        conn.Open();
 
-        SqliteCommand sqlite_cmd;
-        sqlite_cmd = conn.CreateCommand();
+        SqliteCommand sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "INSERT INTO funcionario(nome, idade, telefone, email, funcao, salario) VALUES (@nome, @idade, @telefone, @email, @funcao, @salario);";
         sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", funcionario.Nome));
         sqlite_cmd.Parameters.Add(new SqliteParameter("@idade", funcionario.Idade));
@@ -268,8 +267,7 @@ public class Program
 
         conn.Open();
 
-        SqliteCommand sqlite_cmd;
-        sqlite_cmd = conn.CreateCommand();
+        SqliteCommand sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "INSERT INTO aprendiz(nome, idade, telefone, email, salario) VALUES (@nome, @idade, @telefone, @email, @salario);";
         sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", aprendiz.Nome));
         sqlite_cmd.Parameters.Add(new SqliteParameter("@idade", aprendiz.Idade));
@@ -290,8 +288,7 @@ public class Program
         conn.Open();
 
         SqliteDataReader sqlite_datareader;
-        SqliteCommand sqlite_cmd;
-        sqlite_cmd = conn.CreateCommand();
+        SqliteCommand sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "SELECT * FROM funcionario";
 
         sqlite_datareader = sqlite_cmd.ExecuteReader();
@@ -309,8 +306,7 @@ public class Program
         conn.Open();
 
         SqliteDataReader sqlite_datareader;
-        SqliteCommand sqlite_cmd;
-        sqlite_cmd = conn.CreateCommand();
+        SqliteCommand sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "SELECT * FROM aprendiz";
 
         sqlite_datareader = sqlite_cmd.ExecuteReader();
@@ -327,8 +323,7 @@ public class Program
 
         conn.Open();
 
-        SqliteCommand sqlite_cmd;
-        sqlite_cmd = conn.CreateCommand();
+        SqliteCommand sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "UPDATE funcionario SET idade = @idade, telefone = @telefone, email = @email, funcao = @funcao where nome = @nome;";
 
         sqlite_cmd.Parameters.Add(new SqliteParameter("@idade", funcionario.Idade));
@@ -348,8 +343,7 @@ public class Program
 
         conn.Open();
 
-        SqliteCommand sqlite_cmd;
-        sqlite_cmd = conn.CreateCommand();
+        SqliteCommand sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "UPDATE aprendiz SET idade = @idade, telefone = @telefone, email = @email where nome = @nome;";
 
         sqlite_cmd.Parameters.Add(new SqliteParameter("@idade", aprendiz.Idade));
@@ -368,8 +362,7 @@ public class Program
 
         conn.Open();
 
-        SqliteCommand sqlite_cmd;
-        sqlite_cmd = conn.CreateCommand();
+        SqliteCommand sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "DELETE FROM funcionario WHERE nome=@nome;";
         sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", nome));
 
@@ -384,8 +377,7 @@ public class Program
 
         conn.Open();
 
-        SqliteCommand sqlite_cmd;
-        sqlite_cmd = conn.CreateCommand();
+        SqliteCommand sqlite_cmd = conn.CreateCommand();
         sqlite_cmd.CommandText = "DELETE FROM aprendiz WHERE nome=@nome;";
         sqlite_cmd.Parameters.Add(new SqliteParameter("@nome", nome));
 
